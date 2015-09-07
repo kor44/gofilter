@@ -47,7 +47,7 @@ eth.src[0:3] == 00:00:83
 ```
 Bit field operations:
 ```
-bitwise_and, &      Bitwise AND
+bitwise_and, & - Bitwise AND
 ```	
 	
 ### Fields type

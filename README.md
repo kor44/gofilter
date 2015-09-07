@@ -12,37 +12,43 @@ Yacc and Ragel are used for filter parser.
 ## Filter syntax
 
 ### Comparison operators
-'''
+```
 eq, ==    Equal
 ne, !=    Not Equal
 gt, >     Greater Than
 lt, <     Less Than
 ge, >=    Greater than or Equal to
 le, <=    Less than or Equal to
+```
 	
 ### Search and match operators
-
+```
 contains  Does the protocol, field or slice contain a value
 matches   Does the protocol or text string match the given Perl
           regular expression
-			  
+```			  
 ### Logical expressions
+```
 and, &&   Logical AND
 or,  ||   Logical OR
 not, !    Logical NOT
+```
 
 ### Unsupported features
 
 Functions to convert strings:
+```
 upper(string-field) - converts a string field to uppercase
 lower(string-field) - converts a string field to lowercase
-
+```
 The slice operator:
+```
 eth.src[0:3] == 00:00:83
-
+```
 Bit field operations:
+```
 bitwise_and, &      Bitwise AND
-	
+```	
 	
 ### Fields type
 ```go

@@ -12,7 +12,7 @@ Yacc and Ragel are used for filter parser.
 ## Filter syntax
 
 ### Comparison operators
-
+'''
 eq, ==    Equal
 ne, !=    Not Equal
 gt, >     Greater Than
@@ -45,6 +45,7 @@ bitwise_and, &      Bitwise AND
 	
 	
 ### Fields type
+```go
 FT_BOOL   ftenum = iota // bool
 FT_STRING ftenum = iota // string
 FT_INT    ftenum = iota // int
@@ -68,7 +69,7 @@ FT_BYTES ftenum = iota // []byte
 
 FT_IP  ftenum = iota // net.IP
 FT_MAC ftenum = iota // net.HardwareAddr
-	
+```	
 
 ## Usage example
 ```go

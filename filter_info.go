@@ -12,6 +12,7 @@ var idToFieldTypeMap map[fieldId]ftenum
 
 type ftenum int
 
+// Lis of available field types
 const (
 	_ = iota
 
@@ -45,6 +46,9 @@ var ErrFieldExist = errors.New("Field is already registered")
 
 var id fieldId
 
+// RegisterField adds field with name and f_type to known fields.
+// When try to register field with name which was already registered
+// return ErrFieldExist.
 func RegisterField(name string, f_type ftenum) error {
 	if exists := fieldNameToIdMap[name]; exists != 0 {
 		return ErrFieldExist

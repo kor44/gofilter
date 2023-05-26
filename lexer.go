@@ -185,6 +185,7 @@ const filterLexerImpl_en_main int = 7
 
 type filterLexerImpl struct {
 	data []byte
+	ctx  Context
 	cs 	 int
   	p    int
 	pe   int
@@ -196,10 +197,10 @@ type filterLexerImpl struct {
 	err  string
 }
 
-func newLex(line []byte) *filterLexerImpl {
-	lexer := filterLexerImpl{data: line}
+func newLex(line []byte, ctx Context) *filterLexerImpl {
+	lexer := filterLexerImpl{data: line, ctx: ctx}
 	
-//line lexer.go:203
+//line lexer.go:204
 	{
 	( lexer.cs) = filterLexerImpl_start
 	( lexer.ts) = 0
@@ -207,7 +208,7 @@ func newLex(line []byte) *filterLexerImpl {
 	( lexer.act) = 0
 	}
 
-//line lexer.rl:140
+//line lexer.rl:141
 	lexer.pe = len(line)
 	lexer.eof = len(line)
 	return &lexer
@@ -220,7 +221,7 @@ func newLex(line []byte) *filterLexerImpl {
 func (lexer *filterLexerImpl) Lex(lval *filterSymType) int {
     token_kind := 0
 	
-//line lexer.go:224
+//line lexer.go:225
 	{
 	var _klen int
 	var _trans int
@@ -243,7 +244,7 @@ _resume:
 //line NONE:1
 ( lexer.ts) = ( lexer.p)
 
-//line lexer.go:247
+//line lexer.go:248
 		}
 	}
 
@@ -440,7 +441,7 @@ _eof_trans:
 //line lexer.rl:95
 ( lexer.te) = ( lexer.p)
 ( lexer.p)--
-{ if nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
+{ if lexer.ctx.nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
 			  		token_kind = token_FIELD
 			  } else {
 					token_kind = token_UNPARSED	
@@ -496,7 +497,7 @@ _eof_trans:
  }
 	case 27:
 	{( lexer.p) = (( lexer.te)) - 1
- if nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
+ if lexer.ctx.nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
 			  		token_kind = token_FIELD
 			  } else {
 					token_kind = token_UNPARSED	
@@ -505,7 +506,7 @@ _eof_trans:
 			}
 	}
 	
-//line lexer.go:509
+//line lexer.go:510
 		}
 	}
 
@@ -519,7 +520,7 @@ _again:
 //line NONE:1
 ( lexer.ts) = 0
 
-//line lexer.go:523
+//line lexer.go:524
 		}
 	}
 
@@ -541,7 +542,7 @@ _again:
 	_out: {}
 	}
 
-//line lexer.rl:152
+//line lexer.rl:153
     if ( lexer.cs != filterLexerImpl_error ){
 		lval.data = lexer.data[lexer.ts : lexer.te]
     }
@@ -554,4 +555,8 @@ _again:
 
 func (lexer *filterLexerImpl) Error(s string) {
 	lexer.err = s
+}
+
+func (lexer filterLexerImpl) Context() Context {
+	return lexer.ctx
 }

@@ -5,11 +5,6 @@ import (
 )
 
 type fieldId int
-
-var idToFieldNameMap map[fieldId]string
-var fieldNameToIdMap map[string]fieldId
-var idToFieldTypeMap map[fieldId]ftenum
-
 type ftenum int
 
 // Lis of available field types
@@ -42,39 +37,48 @@ const (
 
 )
 
-var ErrFieldExist = errors.New("Field is already registered")
+type Context struct {
+	Id               fieldId
+	IdToFieldNameMap map[fieldId]string
+	FieldNameToIdMap map[string]fieldId
+	IdToFieldTypeMap map[fieldId]ftenum
+}
 
-var id fieldId
+var ErrFieldExist = errors.New("gofilter: Field is already registered")
 
 // RegisterField adds field with name and f_type to known fields.
 // When try to register field with name which was already registered
 // return ErrFieldExist.
-func RegisterField(name string, f_type ftenum) error {
-	if exists := fieldNameToIdMap[name]; exists != 0 {
+func (ctx *Context) RegisterField(name string, f_type ftenum) error {
+	if exists := ctx.FieldNameToIdMap[name]; exists != 0 {
 		return ErrFieldExist
 	}
 	// field id
-	id++
-	idToFieldNameMap[id] = name
-	fieldNameToIdMap[name] = id
-	idToFieldTypeMap[id] = f_type
+	ctx.Id++
+	ctx.IdToFieldNameMap[ctx.Id] = name
+	ctx.FieldNameToIdMap[name] = ctx.Id
+	ctx.IdToFieldTypeMap[ctx.Id] = f_type
 
 	return nil
 }
-func init() {
-	idToFieldNameMap = make(map[fieldId]string)
-	fieldNameToIdMap = make(map[string]fieldId)
-	idToFieldTypeMap = make(map[fieldId]ftenum)
+
+func CreateContext() Context {
+	return Context{
+		Id:               0,
+		IdToFieldNameMap: make(map[fieldId]string),
+		FieldNameToIdMap: make(map[string]fieldId),
+		IdToFieldTypeMap: make(map[fieldId]ftenum),
+	}
 }
 
-func nameToId(name string) fieldId {
-	return fieldNameToIdMap[name]
+func (ctx Context) nameToId(name string) fieldId {
+	return ctx.FieldNameToIdMap[name]
 }
 
-func nameToFieldType(name string) ftenum {
-	return idToFieldType(nameToId(name))
+func (ctx Context) nameToFieldType(name string) ftenum {
+	return ctx.idToFieldType(ctx.nameToId(name))
 }
 
-func idToFieldType(id fieldId) ftenum {
-	return idToFieldTypeMap[id]
+func (ctx Context) idToFieldType(id fieldId) ftenum {
+	return ctx.IdToFieldTypeMap[id]
 }

@@ -28,7 +28,7 @@ func makeParseNumErrStr(err error) string {
 
 func checkFieldNameVsTypeValue(filterlex filterLexer, name string, op int, data []byte) (interface{}, bool) {
 	data_str := string(data)
-	field_type := nameToFieldType(name)
+	field_type := filterlex.Context().nameToFieldType(name)
 
 	switch {
 	// bool
@@ -306,6 +306,7 @@ var (
 
 type filterLexer interface {
 	Lex(lval *filterSymType) int
+	Context() Context
 	Error(s string)
 }
 

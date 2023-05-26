@@ -83,15 +83,16 @@ package main
 
 import (
 	"fmt"
-	"github.com/kor44/gofilter"
+	"github.com/le0developer/gofilter"
 	"net"
 )
 
 func main() {
-	gofilter.RegisterField("ip.src", gofilter.FT_IP)
-	gofilter.RegisterField("ip.dst", gofilter.FT_IP)
+	ctx := gofilter.CreateContext()
+	ctx.RegisterField("ip.src", gofilter.FT_IP)
+	ctx.RegisterField("ip.dst", gofilter.FT_IP)
 
-	f, err := gofilter.NewFilter("ip.src == 192.168.0.0/24 and ip.dst == 192.168.0.1")
+	f, err := ctx.NewFilter("ip.src == 192.168.0.0/24 and ip.dst == 192.168.0.1")
 	if err != nil {
 		fmt.Printf("Filter parse error: %s", err)
 	}

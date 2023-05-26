@@ -1,5 +1,9 @@
 //go:generate ragel -Z lexer.rl
 //go:generate goyacc -o parser.go -p filter parser.y
+// HACK: we cant modify yacc directly to pass the state
+// this is a very ugly way to modify the file,
+// but it works + novody cares because its pre-build
+//go:generate sh -c "printf '/\tError(s string)/ insert\n\tContext() Context\n.\nxit\neof' | ex parser.go"
 
 // Package gofilter provides implementation of Wireshark display filter.
 package gofilter
@@ -21,8 +25,8 @@ func (f *Filter) Apply(m Message) bool {
 }
 
 // Create new filter
-func NewFilter(str string) (*Filter, error) {
-	lexer := newLex([]byte(str))
+func (ctx Context) NewFilter(str string) (*Filter, error) {
+	lexer := newLex([]byte(str), ctx)
 	ok := filterParse(lexer)
 
 	if ok == 0 {

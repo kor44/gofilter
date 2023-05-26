@@ -92,7 +92,7 @@ import "fmt"
 			{ token_kind = token_UNPARSED; fbreak; };
 		
 		("-" | "+" | alnum | "_" | "." | ":")+
-			{ if nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
+			{ if lexer.ctx.nameToId(string(lexer.data[lexer.ts : lexer.te])) != 0 {
 			  		token_kind = token_FIELD
 			  } else {
 					token_kind = token_UNPARSED	
@@ -123,6 +123,7 @@ import "fmt"
 
 type filterLexerImpl struct {
 	data []byte
+	ctx  Context
 	cs 	 int
   	p    int
 	pe   int
@@ -134,8 +135,8 @@ type filterLexerImpl struct {
 	err  string
 }
 
-func newLex(line []byte) *filterLexerImpl {
-	lexer := filterLexerImpl{data: line}
+func newLex(line []byte, ctx Context) *filterLexerImpl {
+	lexer := filterLexerImpl{data: line, ctx: ctx}
 	%%write init;
 	lexer.pe = len(line)
 	lexer.eof = len(line)
@@ -161,4 +162,8 @@ func (lexer *filterLexerImpl) Lex(lval *filterSymType) int {
 
 func (lexer *filterLexerImpl) Error(s string) {
 	lexer.err = s
+}
+
+func (lexer filterLexerImpl) Context() Context {
+	return lexer.ctx
 }

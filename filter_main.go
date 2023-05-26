@@ -1,6 +1,5 @@
 //go:generate ragel -Z lexer.rl
-//go:generate -command yacc go tool yacc
-//go:generate yacc -o parser.go -p filter parser.y
+//go:generate goyacc -o parser.go -p filter parser.y
 
 // Package gofilter provides implementation of Wireshark display filter.
 package gofilter

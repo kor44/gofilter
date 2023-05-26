@@ -108,3 +108,9 @@ func main() {
 	}
 }
 ```
+
+## Building
+
+1. Install ragel somehow.
+2. Install goyacc with `go install golang.org/x/tools/cmd/goyacc`
+3. `go generate`

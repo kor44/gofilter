@@ -83,7 +83,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/le0developer/gofilter"
+	"github.com/kor44/gofilter"
 	"net"
 )
 

@@ -116,6 +116,6 @@ If you make changes to `lexer.rl` or `parser.y`, you need to re-compile them.
 For that you will need:  (*nix-like environment required)
 
 1. [Ragel](https://github.com/adrian-thurston/ragel).
-2. goyacc (install with`go install golang.org/x/tools/cmd/goyacc`)
+2. goyacc (install with `go install golang.org/x/tools/cmd/goyacc`)
 
-After that, you can run `go generate`.
+After you have installed the tools, you can run `go generate`.

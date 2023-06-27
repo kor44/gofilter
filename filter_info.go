@@ -38,10 +38,9 @@ const (
 )
 
 type Context struct {
-	Id               fieldId
-	IdToFieldNameMap map[fieldId]string
-	FieldNameToIdMap map[string]fieldId
-	IdToFieldTypeMap map[fieldId]ftenum
+	idToFieldNameMap map[fieldId]string
+	fieldNameToIdMap map[string]fieldId
+	idToFieldTypeMap map[fieldId]ftenum
 }
 
 var ErrFieldExist = errors.New("gofilter: Field is already registered")
@@ -50,29 +49,28 @@ var ErrFieldExist = errors.New("gofilter: Field is already registered")
 // When try to register field with name which was already registered
 // return ErrFieldExist.
 func (ctx *Context) RegisterField(name string, f_type ftenum) error {
-	if exists := ctx.FieldNameToIdMap[name]; exists != 0 {
+	if exists := ctx.fieldNameToIdMap[name]; exists != 0 {
 		return ErrFieldExist
 	}
 	// field id
-	ctx.Id++
-	ctx.IdToFieldNameMap[ctx.Id] = name
-	ctx.FieldNameToIdMap[name] = ctx.Id
-	ctx.IdToFieldTypeMap[ctx.Id] = f_type
+	id := fieldId(len(ctx.idToFieldNameMap))
+	ctx.idToFieldNameMap[id] = name
+	ctx.fieldNameToIdMap[name] = id
+	ctx.idToFieldTypeMap[id] = f_type
 
 	return nil
 }
 
 func CreateContext() Context {
 	return Context{
-		Id:               0,
-		IdToFieldNameMap: make(map[fieldId]string),
-		FieldNameToIdMap: make(map[string]fieldId),
-		IdToFieldTypeMap: make(map[fieldId]ftenum),
+		idToFieldNameMap: make(map[fieldId]string),
+		fieldNameToIdMap: make(map[string]fieldId),
+		idToFieldTypeMap: make(map[fieldId]ftenum),
 	}
 }
 
 func (ctx Context) nameToId(name string) fieldId {
-	return ctx.FieldNameToIdMap[name]
+	return ctx.fieldNameToIdMap[name]
 }
 
 func (ctx Context) nameToFieldType(name string) ftenum {
@@ -80,5 +78,5 @@ func (ctx Context) nameToFieldType(name string) ftenum {
 }
 
 func (ctx Context) idToFieldType(id fieldId) ftenum {
-	return ctx.IdToFieldTypeMap[id]
+	return ctx.idToFieldTypeMap[id]
 }

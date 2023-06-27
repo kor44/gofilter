@@ -88,10 +88,11 @@ import (
 )
 
 func main() {
-	gofilter.RegisterField("ip.src", gofilter.FT_IP)
-	gofilter.RegisterField("ip.dst", gofilter.FT_IP)
+	ctx := gofilter.CreateContext()
+	ctx.RegisterField("ip.src", gofilter.FT_IP)
+	ctx.RegisterField("ip.dst", gofilter.FT_IP)
 
-	f, err := gofilter.NewFilter("ip.src == 192.168.0.0/24 and ip.dst == 192.168.0.1")
+	f, err := ctx.NewFilter("ip.src == 192.168.0.0/24 and ip.dst == 192.168.0.1")
 	if err != nil {
 		fmt.Printf("Filter parse error: %s", err)
 	}
@@ -108,3 +109,13 @@ func main() {
 	}
 }
 ```
+
+## Building lexer.go, nodes.go and parser.go
+
+If you make changes to `lexer.rl` or `parser.y`, you need to re-compile them.
+For that you will need:  (*nix-like environment required)
+
+1. [Ragel](https://github.com/adrian-thurston/ragel).
+2. goyacc (install with `go install golang.org/x/tools/cmd/goyacc`)
+
+After you have installed the tools, you can run `go generate`.

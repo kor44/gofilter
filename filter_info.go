@@ -43,7 +43,7 @@ type Context struct {
 	idToFieldTypeMap map[fieldId]ftenum
 }
 
-var ErrFieldExist = errors.New("gofilter: Field is already registered")
+var ErrFieldExist = errors.New("gofilter: field is already registered")
 
 // RegisterField adds field with name and f_type to known fields.
 // When try to register field with name which was already registered

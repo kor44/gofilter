@@ -265,3 +265,25 @@ func TestFilterApplyMac(t *testing.T) {
 		t.Error("Packet must not pass")
 	}
 }
+
+func TestGlobalFilterContext(t *testing.T) {
+	err := RegisterField("f_int", FT_INT)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = RegisterField("f_int", FT_INT)
+	if err != ErrFieldExist {
+		t.Error("Must be error: field is already registered")
+	}
+
+	f, err := NewFilter("f_int == 1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !f.Apply(map[string]interface{}{"f_int": 1}) {
+		t.Error("Packet must pass")
+	}
+	if f.Apply(map[string]interface{}{"f_int": 2}) {
+		t.Error("Packet must not pass")
+	}
+}

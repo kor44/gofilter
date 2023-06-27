@@ -53,7 +53,7 @@ func (ctx *Context) RegisterField(name string, f_type ftenum) error {
 		return ErrFieldExist
 	}
 	// field id
-	id := fieldId(len(ctx.idToFieldNameMap))
+	id := fieldId(len(ctx.idToFieldNameMap) + 1)
 	ctx.idToFieldNameMap[id] = name
 	ctx.fieldNameToIdMap[name] = id
 	ctx.idToFieldTypeMap[id] = f_type
